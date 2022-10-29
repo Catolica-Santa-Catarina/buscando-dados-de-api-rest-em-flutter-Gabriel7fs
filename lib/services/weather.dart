@@ -1,4 +1,22 @@
+import 'package:tempo_template/services/location.dart';
+import 'package:tempo_template/services/networking.dart';
+
 class WeatherModel {
+
+  Future<dynamic> getLocationWeather() async {
+
+    const apiKey = 'a1ee7dd673ed4bb8bce021e5bccd552e';
+    const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather';
+
+    Location location = Location();
+    await location.getCurrentLocation();
+
+    NetworkHelper networkHelper = NetworkHelper('$openWeatherMapURL?lat=${location.latitude}&lon=${location.longitude}'
+        '&appid=$apiKey&units=metric');
+
+    var weatherData = await networkHelper.getData();
+    return weatherData;
+  }
   String getWeatherIcon(int condition) {
     if (condition < 300) {
       return '🌩';
